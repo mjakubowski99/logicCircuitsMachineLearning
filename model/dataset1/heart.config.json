@@ -1,0 +1,33 @@
+{
+  "age": {
+    "type": "range",
+    "values": [
+      {
+        "gte": 0,
+        "lower": 20,
+        "value": 0
+      },
+      {
+        "gte": 20,
+        "lower": 35,
+        "value": 1
+      },
+      {
+        "gte": 35,
+        "lower": 50,
+        "value": 2
+      }
+    ],
+    "default": 3
+  },
+  "gender": {
+    "type": "equal",
+    "values": [
+      {
+        "equal": "male",
+        "value": 1
+      }
+    ],
+    "default": 0
+  }
+}

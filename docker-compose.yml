@@ -1,0 +1,17 @@
+version: '3'
+services:
+  app:
+    restart: unless-stopped
+    build:
+      context: ./
+      dockerfile: ./.docker/Dockerfile
+    container_name: flask_api
+    environment:
+      - PYTHONPATH=/app/lib/
+      - FLASK_APP=app
+      - FLASK_DEBUG=true
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/app
+      - ./lib:/app/lib

@@ -1,0 +1,16 @@
+{
+  "RainTomorrow": {
+    "type": "equal",
+    "values": [
+      {
+        "equal": "Yes",
+        "value": 1
+      },
+      {
+        "equal": "No",
+        "value": 0
+      }
+    ],
+    "default": 0
+  }
+}
