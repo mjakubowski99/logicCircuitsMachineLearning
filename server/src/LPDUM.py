@@ -9,23 +9,23 @@ from sklearn.model_selection import train_test_split
 from datetime import datetime
 
 # # DATASET 1
-data_set_url = "dataset1/heart.csv"
+data_set_url = "../datasets/dataset1/heart.csv"
 goal_column = 13
-config_file_url = "dataset1/heart.config.json"
-# config_file_url = None
+config_file_url = "../datasets/dataset1/heart.config.json"
+config_file_url = None
 column_numbers_array = None
 
 # # DATASET 2
-# data_set_url = "dataset2/weatherAUS.csv"
-# goal_column = 22
-# config_file_url = "dataset2/weatherAUS.config.json"
-# column_numbers_array = None
+#data_set_url = "../datasets/dataset2/weatherAUS.csv"
+#goal_column = 22
+#config_file_url = "../datasets/dataset2/weatherAUS.config.json"
+#column_numbers_array = None
 
 # DATASET 3
-# data_set_url = "dataset3/county_results.csv"
-# goal_column = 54
-# config_file_url = None
-# column_numbers_array = None
+#data_set_url = "../datasets/dataset3/county_results.csv"
+#goal_column = 54
+#config_file_url = None
+#column_numbers_array = None
 
 # Wartości dla generowanych formuł
 literal_number_in_clause = 3
@@ -33,7 +33,7 @@ clause_number_in_formula = 10
 formula_multiples_number = 100
 
 # Wartość powtarzania pętli poprawiającej formuły
-max_number_of_training_loop = 20
+max_number_of_training_loop = 2
 
 
 def add_missing_values_or_removed(data_frame, goal_label):
@@ -216,6 +216,7 @@ def split_data_frame_to_positives_and_negatives_rows(data_frame, new_goal_index)
             positive.append(row)
         else:
             negative.append(row)
+
     return positive, negative
 
 
