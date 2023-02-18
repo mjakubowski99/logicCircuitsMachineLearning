@@ -13,7 +13,7 @@ import numpy as np
 
 class LogicClassifier(BaseEstimator):
 
-    def __init__(self, literal_number_in_clause=3, clause_number_in_formula=5, formula_multiples_number=200, max_number_of_training_loop=20):
+    def __init__(self, literal_number_in_clause=3, clause_number_in_formula=5, formula_multiples_number=100, max_number_of_training_loop=20):
         self.literal_number_in_clause = literal_number_in_clause
         self.clause_number_in_formula = clause_number_in_formula
         self.formula_multiples_number = formula_multiples_number
@@ -43,11 +43,8 @@ class LogicClassifier(BaseEstimator):
             expected_positive_formula_number = self.formula_multiples_number - len(positive)
             expected_negative_formula_number = self.formula_multiples_number - len(negative)
 
-            st = time.time()
             generated_positive_formulas = formula_creator(data[1], data[0], expected_positive_formula_number, self.clause_number_in_formula, self.literal_number_in_clause)
             generated_negative_formulas = formula_creator(data[0], data[1], expected_negative_formula_number, self.clause_number_in_formula, self.literal_number_in_clause)
-            et = time.time()
-            print("Generowanie: ", et-st)
 
             if positive.size == 0:
                 positive = generated_positive_formulas
@@ -59,15 +56,8 @@ class LogicClassifier(BaseEstimator):
             else:
                 negative = np.concatenate((negative, generated_negative_formulas), axis=0)
 
-            self.positive_formulas = generated_positive_formulas
-            self.negative_formulas = generated_negative_formulas
-            print(self.positive_formulas)
-
-            st = time.time()
             best_positive_formulas = get_most_satisfiable_formulas(positive, get_formulas_score(data[1], positive, True))
             best_negative_formulas = get_most_satisfiable_formulas(negative, get_formulas_score(data[0], negative, False))
-            et = time.time()
-            print("Sprawdzenie, które najlepsze: ", et-st)
 
             early_break = len(best_positive_formulas) > self.formula_multiples_number and len(best_negative_formulas) >= self.formula_multiples_number
 
@@ -89,43 +79,29 @@ class LogicClassifier(BaseEstimator):
     def score(self, X, y):
         check_X_y(X, y)
 
-        guessed = 0
+        X = self.to_numpy_array(X)
+        y = self.to_numpy_array(y)
+
+        positive = [get_formulas_score(np.array([x]), self.positive_formulas, True)[0] for x in X]
+        negative = [get_formulas_score(np.array([x]), self.negative_formulas, False)[0] for x in X]
+
+        positive_score = np.array([x[1][1]+x[0][0] for x in positive])
+        negative_score = np.array([x[1][1]+x[0][0] for x in negative])
 
         index = 0
-        for value in y:
-            
-            votes_on_true = 0
-            votes_on_false = 0
+        guessed = 0
+        for expected in y:
+            predicted = positive_score[index] > negative_score[index] 
 
-            for formula in self.positive_formulas:
-                is_positive = formula_is_positive(X[index], formula)
-                if is_positive:
-                    votes_on_true+=1
-
-            for formula in self.negative_formulas:
-                is_negative = not formula_is_positive(X[index], formula)
-                if is_negative:
-                    votes_on_false+=1
-
-            if votes_on_true > votes_on_false and value == True:
-                guessed+=1
-            elif votes_on_true <= votes_on_false and value == False:
+            if predicted == bool(expected):
                 guessed+=1
             index+=1
 
-        return guessed / len(y)
+        return guessed/len(y)
+
+
             
 
-
-
-    def calculate_score(self, score_positive, score_negative):
-        positive = np.sum(np.array([x[1][1]+x[0][0] for x in score_positive]))
-        negative = np.sum(np.array([x[1][1]+x[0][0] for x in score_negative]))
-
-        positive_all = np.sum(np.array([x[1][1]+x[0][0]+x[1][0]+x[1][1] for x in score_positive]))
-        negative_all = np.sum(np.array([x[1][1]+x[0][0]+x[1][0]+x[1][1]  for x in score_negative]))
-
-        return (positive+negative) / (positive_all+negative_all)
 
     def to_numpy_array(self, value):
         if not isinstance(value, np.ndarray):

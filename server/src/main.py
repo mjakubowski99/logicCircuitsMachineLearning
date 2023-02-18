@@ -32,8 +32,7 @@ X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.33, random
 clf = LogicClassifier()
 clf.fit(X_train, y_train)
 
-print(clf.score(X_test,y_test))
-print(clf.positive_formulas[0])
+print("Wynik dla danych testowych: ", clf.score(X_test,y_test))
 
 
 
