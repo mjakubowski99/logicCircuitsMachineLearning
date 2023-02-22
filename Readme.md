@@ -49,7 +49,7 @@ są w stanie głosować na temat przynależności kolumny celu do danej klasy. N
 skuteczne na zbiorze treningowym są formuły logiczne.
 
 Przykład z kodu pokazujący jak wygląda przeprowadzenia procesu uczenia maszynowego oraz pobranie wyników:
-```
+```python
 clf = LogicClassifier()
 clf.fit(X_train, y_train)
 
