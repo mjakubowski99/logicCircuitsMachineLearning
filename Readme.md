@@ -47,3 +47,11 @@ z uwzględnieniem stałych dla algorytmu zdefiniowanych w konstrukturze, które 
 można dowolnie zmieniać. Wykonuje się zadana liczba cykli treningowych, które w rezultacie dają nam zbiory formuł, które
 są w stanie głosować na temat przynależności kolumny celu do danej klasy. Natomiast wywołanie metody score sprawdza jak 
 skuteczne na zbiorze treningowym są formuły logiczne.
+
+Przykład z kodu pokazujący jak wygląda przeprowadzenia procesu uczenia maszynowego oraz pobranie wyników:
+```
+clf = LogicClassifier()
+clf.fit(X_train, y_train)
+
+print("Wynik dla danych testowych: ", clf.score(X_test,y_test))
+```
